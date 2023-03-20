@@ -48,7 +48,7 @@ public class MyForegroundService extends Service {
 
 
 
-        return START_NOT_STICKY;
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable

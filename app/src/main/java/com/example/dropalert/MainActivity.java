@@ -1,6 +1,5 @@
 package com.example.dropalert;
 
-import static android.app.Service.STOP_FOREGROUND_REMOVE;
 import static androidx.core.app.ServiceCompat.stopForeground;
 
 import androidx.annotation.NonNull;
@@ -49,20 +48,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkState() {
-        Intent serviceIntent = new Intent(this, MyForegroundService.class);
         if(switchCompat.isChecked()){
             Log.i("switch","checked");
             stateTV.setText(STATE_ON_STRING);
             stateTV.setTextColor(getResources().getColor(R.color.green));
+
             if(!foregroundServiceRunning()) {
-                //runs forever
-                startForegroundService(serviceIntent);
+                startService();
             }
         }else {
             Log.i("switch", "not Checked");
             stateTV.setText(STATE_OFF_STRING);
             stateTV.setTextColor(getResources().getColor(R.color.red));
-            stopService(serviceIntent);
+            stopService();
         }
 
     }
@@ -77,5 +75,17 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    public void startService() {
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        Log.i("Service","started");
+        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        ContextCompat.startForegroundService(this, serviceIntent);
+    }
+    public void stopService() {
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        stopService(serviceIntent);
+        Log.i("Service","stoped");
+
+    }
 
 }
